@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+    <head>
+        <style type="text/css">
+            table{
+                border-collapse: collapse;
+            }
+            td{
+                width:30px;
+                height:30px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <table border="1" id = "table"></table>
+
+        <script>
+            const rows = 20
+            const cells = 20
+            const tableNode = document.getElementById("table")
+            let backgroundColor = "red";
+            for(let x=0; x<rows; x++){
+                let trNode = tableNode.insertRow()
+                for (let y=0; y<cells; y++){
+                    let tdNode = trNode.insertCell()
+                    tdNode.onclick = function(){
+                        this.bgColor = backgroundColor
+                        if(backgroundColor === "red"){
+                            backgroundColor = "green"
+                        }else{
+                            backgroundColor = "red"
+                        }
+                        this.onclick = function(){}
+                        let count = 0; // 判断纵轴是否连珠
+                        for(let r=x; r<rows; r++){
+                            if(tableNode.rows[r].cells[y].bgColor === this.bgColor){
+                                count++
+                            }else{
+                                break
+                            }
+                        }
+                        for(let r=x-1; r>=0; r--){
+                            if(tableNode.rows[r].cells[y].bgColor === this.bgColor){
+                                count++
+                            }else{
+                                break
+                            }
+                        }
+                        if(count>=5){
+                            alert("胜利")
+                        }
+                        count = 0 // 判断横轴是否连珠
+                        for(let c=y; c<cells; c++){
+                            if(tableNode.rows[x].cells[c].bgColor === this.bgColor){
+                                count++
+                            }else{
+                                break
+                            }
+                        }
+                        for(let c=y-1; c>=0; c--){
+                            if(tableNode.rows[x].cells[c].bgColor === this.bgColor){
+                                count++
+                            }else{
+                                break
+                            }
+                        }
+                        if(count>=5){
+                            alert("胜利")
+                        }
+                        count = 0 // 判断从右上到左下是否连珠
+                        let localX = x
+                        let localY = y
+                        while(localX>=0 && localY<cells){
+                            if(tableNode.rows[localX].cells[localY].bgColor === this.bgColor){
+                                count++
+                                localX--
+                                localY++
+                            }else{
+                                break
+                            }
+                        }
+                        localX = x+1
+                        localY = y-1
+                        while(localX<rows && localY>=0) {
+                            if(tableNode.rows[localX].cells[localY].bgColor === this.bgColor){
+                                count++
+                                localX++
+                                localY--
+                            }else{
+                                break
+                            }
+                        }
+                        if(count>=5){
+                            alert("胜利")
+                        }
+                        count = 0 // 判断从左上到右下是否连珠
+                        localX = x
+                        localY = y
+                        while(localX>=0 && localY>=0){
+                            if(tableNode.rows[localX].cells[localY].bgColor === this.bgColor){
+                                count++
+                                localX--
+                                localY--
+                            }else{
+                                break
+                            }
+                        }
+                        localX = x+1
+                        localY = y+1
+                        while(localX<rows && localY<cells){
+                            if(tableNode.rows[localX].cells[localY].bgColor === this.bgColor){
+                                count++
+                                localX++
+                                localY++
+                            }else{
+                                break
+                            }
+                        }
+                        if(count>=5){
+                            alert("胜利")
+                        }
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
